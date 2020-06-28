@@ -30,22 +30,26 @@ dimCH = height / nyC
 # logic matrix
 gameState = np.zeros((nxC,nyC))
 
-# automat palo
-gameState[5, 3] = 1
-gameState[5, 4] = 1
-gameState[5, 5] = 1
+# automat move 1
+gameState[3, 3] = 1
+gameState[3, 4] = 1
+gameState[3, 5] = 1
+gameState[2, 5] = 1
+gameState[1, 4] = 1
 
-# automat move
-gameState[21, 21] = 1
-gameState[21, 22] = 1
-gameState[22, 23] = 1
-gameState[21, 23] = 1
-gameState[20, 23] = 1
-
-gameState[20, 5] = 1
+# automat move 1
+gameState[23, 3] = 1
+gameState[23, 4] = 1
+gameState[23, 5] = 1
+gameState[22, 5] = 1
 gameState[21, 4] = 1
-gameState[20, 4] = 1
-gameState[21, 5] = 1
+
+# automat move 1
+gameState[13, 3] = 1
+gameState[13, 4] = 1
+gameState[13, 5] = 1
+gameState[12, 5] = 1
+gameState[11, 4] = 1
 
 # pause control
 pauseGame = False
@@ -78,8 +82,6 @@ while running:
                     y_i = ((i - x_i) // 3) - 1
                     if i != 4 :
                         n_neigh += gameState[(x + x_i) % nxC, (y + y_i) % nyC]
-                #if ( x == 5 and y >= 3 and y <= 5 ) or ( y == 4 and x >= 4 and x <= 6 ):
-                #    print(x,y,'=',n_neigh , gameState[x, y])
                     
                 # Rule #1: if the cell is dead and there are 3 cells alife close, will be revivie
                 if gameState[x, y] == 0 and n_neigh == 3:

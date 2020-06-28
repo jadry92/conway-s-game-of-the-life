@@ -2,26 +2,26 @@
 // by : @jadry 92
 
 
-let nx = 50
-let ny = 50
+let nx = 25
+let ny = 25
 let compute = true
 let fr = 5
 
 let gameState = new Array(ny*nx)
-for (let i = 0; i < ny*nx; i++) {
-  gameState[i] = 0
-}
-// index  ix + iy * nx
-gameState[5 + 3*nx] = 1
-gameState[5 + 4*nx] = 1
-gameState[5 + 5*nx] = 1
-
-let newGameState = gameState.slice()
-
+let newGameState = new Array(ny*nx)
 function setup() {
-  createCanvas(500, 500);
+  let canvas = createCanvas(floor(windowWidth*0.5), floor(windowWidth*0.5))
+
+  for (let i = 0; i < ny*nx; i++) {
+    gameState[i] = 0
+  }
+  // index  ix + iy * nx
+  initialImage()
+
+  newGameState = gameState.slice()
   frameRate(fr)
 }
+
 
 function mousePressed(event) {
   if (mouseButton === LEFT) {
@@ -40,7 +40,7 @@ function mousePressed(event) {
 }
 
 function keyTyped() {
-  if (key === ' '){
+  if (key === 'a' || len(touches) > 1 ){
     compute = !compute
   }
 }
@@ -55,14 +55,23 @@ function draw() {
         for (let i = 0; i < 9; i++) {
           if (i != 4) {
             const ix = (i % 3) - 1
-            const iy = floor((i-ix) / 3) - 1
-            totalNear += gameState[(x + ix) + (y + iy)*nx];
+            const iy = floor((i - ix) / 3) - 1
+            let x_ix = (x + ix) % nx
+            let y_iy = (y + iy) % ny
+            if (x_ix === -1){
+              x_ix = nx-1
+            }
+            if (y_iy === -1){
+              y_iy = ny-1
+            }
+            totalNear += gameState[x_ix + (y_iy * nx)]
+            //console.log((x + ix) % nx,(y + iy) % ny)
           }
         }
 
 
         // Rule #1: if the cell is dead and there are 3 cells alife close, will be revivie
-        if (gameState[x + y*nx] === 0 && totalNear == 3) {
+        if (gameState[x + y*nx] === 0 && totalNear === 3) {
           newGameState[x + y*nx] = 1
         }
         else if (gameState[x + y*nx] === 1 && (totalNear < 2 || totalNear > 3)) {
@@ -74,7 +83,6 @@ function draw() {
 
       if (newGameState[x + y*nx] === 1) {
         fill(255,0,0)
-        //noStroke()
         square((x*width/nx), (y*height/ny), width/nx);
       } else {
         fill(255,255,255)
@@ -84,3 +92,17 @@ function draw() {
   }
   gameState = newGameState.slice()
 }
+
+
+function initialImage() {
+  for (var i = 0; i < 16; i++) {
+    const ix = (i % 4)
+    let iy = floor((i - ix) / 4)
+    gameState[4+(ix*6) + (3+(iy*6))*nx] = 1
+    gameState[4+(ix*6) + (4+(iy*6))*nx] = 1
+    gameState[4+(ix*6) + (5+(iy*6))*nx] = 1
+    gameState[3+(ix*6) + (5+(iy*6))*nx] = 1
+    gameState[2+(ix*6) + (4+(iy*6))*nx] = 1
+  }
+}
+

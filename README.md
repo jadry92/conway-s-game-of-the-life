@@ -25,4 +25,4 @@ $ git clone https://github.com/jadry92/conway-s-game-of-the-life.git
 ```
 
 - Step 2:
-Open the `index.html` in the your browser.
+Open the `index.html` in your browser.
